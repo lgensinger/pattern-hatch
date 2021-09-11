@@ -11,7 +11,7 @@ let hp = new HatchPattern();
 // TEST INIT //
 test("init", t => {
 
-    t.true(hp.startingPoint != null);
+    t.true(hp.unit != null);
 
 });
 
@@ -63,7 +63,6 @@ let hpp = new HatchPattern(unit);
 // TEST INIT //
 test("init_params", t => {
 
-    t.true(hpp.startingPoint != null);
     t.true(hpp.unit == unit);
 
 });
@@ -95,7 +94,7 @@ test("generate_params", t => {
     let artboard = document.querySelector("#artboard");
 
     // generate pattern inside artboard
-    hp.generate(artboard, "test");
+    hp.generate(artboard, "test", startingPoint);
 
     // get generated pattern
     let pattern = document.querySelector("#test");

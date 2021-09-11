@@ -4,15 +4,14 @@ import { configurationDimension } from "../configuration.js";
 
 /**
  * HatchPattern is an svg hatch pattern.
- * @param {enum} startingPoint - bottom | top
  * @param {integer} unit - grid unit
  */
 class HatchPattern {
-    constructor(unit=configurationDimension.unit, startingPoint="top") {
+    constructor(unit=configurationDimension.unit) {
 
         // update self
         this.pattern = null;
-        this.startingPoint = startingPoint.toLowerCase();
+        this.startingPoint = null;
         this.unit = unit;
 
         // if unit is undefined use a swatch size of 1 font size unit
@@ -40,7 +39,8 @@ class HatchPattern {
             // coords
             coords = [[0, this.unit], [this.unit, 0]];
 
-        } else if (this.startingPoint == "top") {
+        // default to top starting point
+        } else {
 
             // coods
             coords = [[0, 0], [this.unit, this.unit]];
@@ -67,11 +67,12 @@ class HatchPattern {
     }
 
     /**
-     * Generate an SVG hexagon tessellation.
+     * Generate an SVG hatch tessellation.
      * @param {domNode} artboard - svg dom element
      * @param {string} id - pattern id
+     * @param {enum} startingPoint - bottom | top
      */
-    generate(artboard, id) {
+    generate(artboard, id, startingPoint="top") {
 
         // add pattern element
         this.pattern = select(artboard)
@@ -89,6 +90,9 @@ class HatchPattern {
             .attr("y", 0)
             .attr("width", this.unit)
             .attr("height", this.unit);
+
+        // update self
+        this.startingPoint = startingPoint;
 
         // generate line
         this.hatch(this.data);
