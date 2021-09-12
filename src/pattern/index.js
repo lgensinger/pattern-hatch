@@ -10,6 +10,7 @@ class HatchPattern {
     constructor(unit=configurationDimension.unit) {
 
         // update self
+        this.className = null;
         this.pattern = null;
         this.startingPoint = null;
         this.unit = unit;
@@ -53,26 +54,32 @@ class HatchPattern {
 
     /**
      * Generate line in pattern.
-     * @param {array} coords - array where 0 == [x1, y1], 1 == [x2,y2]
+     * @param {array} data - line coordinates where 0 == [x1, y1], 1 == [x2,y2]
      */
-    hatch(coords) {
+    hatch(data) {
 
         // line
-        this.pattern.append("line")
-            .attr("x1", coords[0][0])
-            .attr("y1", coords[0][1])
-            .attr("x2", coords[1][0])
-            .attr("y2", coords[1][1]);
+        this.pattern
+            .selectAll(`.${this.className}`)
+            .data(data)
+            .enter()
+            .append("line")
+            .attr("class", this.className)
+            .attr("x1", d => d[0][0])
+            .attr("y1", d => d[0][1])
+            .attr("x2", d => d[1][0])
+            .attr("y2", d => d[1][1]);
 
     }
 
     /**
      * Generate an SVG hatch tessellation.
      * @param {domNode} artboard - svg dom element
+     * @param {string} className - individual line class
      * @param {string} id - pattern id
      * @param {enum} startingPoint - bottom | top
      */
-    generate(artboard, id, startingPoint="top") {
+    generate(artboard, id, startingPoint="top", className="hatch") {
 
         // add pattern element
         this.pattern = select(artboard)
@@ -92,10 +99,11 @@ class HatchPattern {
             .attr("height", this.unit);
 
         // update self
+        this.className = className;
         this.startingPoint = startingPoint;
 
         // generate line
-        this.hatch(this.data);
+        this.hatch([this.data]);
 
     }
 

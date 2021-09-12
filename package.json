@@ -1,6 +1,6 @@
 {
   "name": "@lgv/pattern-hatch",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "type": "module",
   "description": "ES6 svg hatch pattern.",
   "main": "src/index.js",
